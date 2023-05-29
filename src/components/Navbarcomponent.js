@@ -138,28 +138,36 @@ function Navbarcomponent(props) {
       const { ethereum } = window;
   
       if (!ethereum) {
-        console.log("Make sure you have Metamask installed!");
+        console.log('Make sure you have MetaMask installed!');
         return;
-      } else {
-        //console.log("Wallet exists! We're ready to go!")
       }
   
-      const accounts = await ethereum.request({ method: 'eth_accounts' });
+      try {
+        await ethereum.request({ method: 'eth_requestAccounts' });
   
-      if (accounts.length !== 0) {
-        const account = accounts[0];
-        //console.log("Found an authorized account: ", account);
-
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const BalanceContract= new ethers.Contract(BalanceContractAddress, BalanceContractABI, signer);
-        const balance = await BalanceContract.displayFunds();
-        setCurrentBalanace(String(balance));
-      } else {
-        console.log("No authorized account found");
+        const accounts = await ethereum.request({ method: 'eth_accounts' });
+  
+        if (accounts.length !== 0) {
+          const account = accounts[0];
+          console.log('Found an authorized account:', account);
+  
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const BalanceContract = new ethers.Contract(
+            BalanceContractAddress,
+            BalanceContractABI,
+            signer
+          );
+  
+          const balance = await BalanceContract.displayFunds();
+          setCurrentBalanace(String(balance));
+        } else {
+          console.log('No authorized account found');
+        }
+      } catch (error) {
+        console.log(error);
       }
-    }
-
+    };
     useEffect(() => {
       checkWalletIsConnected();
     }, [])
