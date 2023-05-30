@@ -13,7 +13,7 @@ import { async } from '@firebase/util';
 import { ethers } from "ethers";
 
 
-const BalanceContractAddress = "0x7611c7812A18Bb447C55c71E04Bbe04F9a206f7E"
+const BalanceContractAddress = "0x59cf5f3fD49F9C112889e1d9c82D59c1BFaeDF5A"
 const BalanceContractABI = [
 	{
 		"inputs": [
